@@ -28,6 +28,22 @@ class Instruction:
 
         return opcode, addr_type, operand
 
+    @staticmethod
+    def from_machine_code(machine_code_str: str):
+        """
+        Преобразует строку машинного кода в объект Instruction.
+        :param machine_code_str: строка с 16-битным машинным кодом (например, "0001000000000000")
+        :return: экземпляр Instruction
+        """
+        # Преобразуем строку в 16-битное целое число
+        encoded_instruction = int(machine_code_str, 2)
+
+        # Декодируем инструкцию
+        opcode, addr_type, operand = Instruction.decode(encoded_instruction)
+
+        # Возвращаем экземпляр Instruction
+        return Instruction(opcode, addr_type, operand)
+
 
 class Program:
     """Класс для программы"""
