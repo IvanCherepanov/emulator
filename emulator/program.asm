@@ -1,0 +1,10 @@
+LDA ? 0
+ADD ? 1
+ADD # 5
+ADD # 15
+ADD # 25
+ADD # 35
+ADD # 45
+SUB ? 2
+STA ? 3
+HLT ? 0
