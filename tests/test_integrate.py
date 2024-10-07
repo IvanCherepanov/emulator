@@ -26,4 +26,5 @@ def test_output_machine_code():
     processor.run()
 
     # Проверяем результат
+    # todo: убрать привязку к результату, вызывать напрямую метод. Т.к. при изменении данных генерации придется менять теста
     assert processor.AC == 125, f"Expected {sum(processor.DMEM)}, got {processor.AC}"
