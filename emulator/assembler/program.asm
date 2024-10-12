@@ -1,5 +1,0 @@
-LDA ? 0
-ADD # 5
-SUB ? 2
-STA ? 3
-HLT ? 0
