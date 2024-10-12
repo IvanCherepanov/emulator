@@ -1,3 +1,4 @@
+from emulator.common.settings import logger
 from emulator.processor.value_object import Opcode, AddressingMode
 
 
@@ -13,6 +14,7 @@ class Instruction:
         Кодирует команду в 16-битное число для хранения в памяти.
         Формат: [4 бита - команда | 2 бита - адресация | 10 бит - адрес].
         """
+        logger.debug(self.__dict__)
         return (self.opcode.value << 12) | (self.addr_type.value << 10) | (self.operand & 0x3FF)
 
     @staticmethod

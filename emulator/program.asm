@@ -1,10 +1,23 @@
-LDA ? 0
-ADD ? 1
-ADD # 5
-ADD # 15
-ADD # 25
-ADD # 35
-ADD # 45
-SUB ? 2
-STA ? 3
-HLT ? 0
+LDA #0
+STA /B
+LDA @B
+ADD #1
+STA /C
+LDA #1
+STA /B
+LDA #0
+STA /A
+LOOP:
+LDA /B
+LDA @B
+ADD /A
+STA /A
+LDA /B
+ADD #1
+STA /B
+LDA /B
+CMP /C
+JZ END
+JMP LOOP
+END:
+HLT #0
