@@ -10,6 +10,8 @@ class Assembler:
         self.instructions = []
         self.label_map = {}
         self.label_counter = 0
+        self.data_section = []
+        self.is_data_section = False
 
     def assemble(self, asm_code) -> List[int]:
         """
@@ -18,13 +20,26 @@ class Assembler:
         :return: список 16-битных машинных кодов
         """
 
-        # Первый проход для определения меток
+        # Первый проход для определения меток и данных
         for line in asm_code:
-            if line.endswith(":"):
-                self.label_map[line[:-1]] = self.label_counter
-                # self.label_counter += 1 ## добавлять не нужно, т.к в кодах программы это будет ошибкой
+            line = line.strip()
+            # Проверка на секции данных и команд
+            if line == ".data":
+                self.in_data_section = True
+                continue
+            elif line == ".code":
+                self.in_data_section = False
+                continue
+
+            if self.in_data_section:
+                if line.startswith("num"):
+                    self.data_section.append(int(line.split()[1]))
             else:
-                self.label_counter += 1
+                if line.endswith(":"):
+                    self.label_map[line[:-1]] = self.label_counter
+                    # self.label_counter += 1 ## добавлять не нужно, т.к в кодах программы это будет ошибкой
+                else:
+                    self.label_counter += 1
         logger.debug(f"self.label_map: {self.label_map}")
 
         for line in asm_code:
