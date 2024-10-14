@@ -57,7 +57,7 @@ def assembler_start():
 
     # Чтение программы на ассемблере из файла
     asm_code = load_asm_from_file('program.asm')
-    # Ассемблируем программу
+    # Перевод команд в машинные коды
     machine_code = assembler.assemble(asm_code)
 
     # Сохраняем машинный код в файл
@@ -65,12 +65,12 @@ def assembler_start():
 
     # Инициализируем процессор и загружаем программу
     processor = Processor()
-    processor.DMEM[0] = 5  # размер массива
-    processor.DMEM[1] = 20
-    processor.DMEM[2] = 30
-    processor.DMEM[3] = 40
-    processor.DMEM[4] = 50
-    processor.DMEM[5] = 60
+
+    processor.DMEM[0] = assembler.data_length
+    # Загружаем данные массива
+    for i, value in enumerate(assembler.data_section):
+        processor.DMEM[i + 1] = value
+
     processor.load_machine_code_program(machine_code)
 
     # Запускаем процессор
@@ -144,6 +144,6 @@ def new_start():
 
 
 if __name__ == "__main__":
-    processor_start()
-    # assembler_start()
+    # processor_start()
+    assembler_start()
     # new_start()

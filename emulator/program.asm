@@ -1,3 +1,12 @@
+.data
+num 20
+num 30
+num 40
+num 50
+num 60
+num 1000
+num 10000
+.code
 LDA #0
 STA /B
 LDA @B
