@@ -65,9 +65,11 @@ def assembler_start():
 
     # Инициализируем процессор и загружаем программу
     processor = Processor()
-    # Загружаем секцию данных в память процессора
+
+    processor.DMEM[0] = assembler.data_length
+    # Загружаем данные массива
     for i, value in enumerate(assembler.data_section):
-        processor.DMEM[i] = value
+        processor.DMEM[i + 1] = value
 
     processor.load_machine_code_program(machine_code)
 
@@ -142,6 +144,6 @@ def new_start():
 
 
 if __name__ == "__main__":
-    processor_start()
-    # assembler_start()
+    # processor_start()
+    assembler_start()
     # new_start()
