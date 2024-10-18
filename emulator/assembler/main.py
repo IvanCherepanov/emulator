@@ -12,7 +12,6 @@ class Assembler:
         self.label_counter = 0
         self.data_section = []
         self.is_data_section = False
-        self.data_length = 0
 
     def assemble(self, asm_code) -> List[int]:
         """
@@ -35,7 +34,6 @@ class Assembler:
             if self.in_data_section:
                 if line.startswith("num"):
                     self.data_section.append(int(line.split()[1]))
-                    self.data_length += 1
             else:
                 if line.endswith(":"):
                     self.label_map[line[:-1]] = self.label_counter
@@ -45,7 +43,7 @@ class Assembler:
         logger.debug(f"self.label_map: {self.label_map}")
 
         for line in asm_code:
-            if not line.endswith(":") and not line.startswith(".") and not line.startswith('num'):
+            if not line.endswith(":") and not line.startswith('.') and not line.startswith('num'):
                 line = line.strip()
                 if not line:
                     continue
@@ -59,7 +57,7 @@ class Assembler:
                              f"addr_mode_str: {addr_mode_str}, "
                              f"operand_str: {operand_str}")
 
-                opcode = self.parse_opcode(opcode_str)
+                opcode = self._parse_opcode(opcode_str)
 
                 if opcode in [Opcode.JZ, Opcode.JMP]:
                     label = parts[1]
@@ -68,8 +66,8 @@ class Assembler:
 
                     instruction = Instruction(opcode, AddressingMode.IMMEDIATE, addr_label)
                 else:
-                    addr_mode = self.parse_addressing_mode(addr_mode_str)
-                    operand = self.parse_operand_str(operand_str)
+                    addr_mode = self._parse_addressing_mode(addr_mode_str)
+                    operand = self._parse_operand_str(operand_str)
                     logger.debug(f"opcode: {opcode}, addr_mode: {addr_mode}, operand:{operand}")
 
                     instruction = Instruction(opcode, addr_mode, operand)
@@ -77,7 +75,7 @@ class Assembler:
         logger.debug(f"len(self.instructions): {len(self.instructions)}")
         return self.instructions
 
-    def parse_operand_str(self, operand_str):
+    def _parse_operand_str(self, operand_str):
         if GeneralProposeRegisters.has_member(operand_str):
             return int(GeneralProposeRegisters[operand_str].value)
         logger.debug(f"operand_str: {operand_str}, "
@@ -85,7 +83,7 @@ class Assembler:
 
         return int(operand_str)
 
-    def parse_opcode(self, opcode_str):
+    def _parse_opcode(self, opcode_str):
         """
         Парсинг строковой команды в соответствующий Opcode.
         """
@@ -94,7 +92,7 @@ class Assembler:
         except KeyError:
             raise ValueError(f"Неизвестная команда: {opcode_str}")
 
-    def parse_addressing_mode(self, addr_mode_str: str):
+    def _parse_addressing_mode(self, addr_mode_str: str):
         """
         Парсинг строки с типом адресации в соответствующий AddressingMode.
         """

@@ -60,6 +60,7 @@ class Processor:
             elif opcode == Opcode.JZ and self.FLAGS["Z"] == 0:
                 pass
             elif opcode == Opcode.HLT:
+                self.print_state(opcode, addr_type, operand)
                 break  # Остановка процессора
             else:
                 raise Exception(f"Неизвестная команда: {opcode, type(opcode), opcode == Opcode.JZ}")
