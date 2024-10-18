@@ -12,7 +12,6 @@ class Assembler:
         self.label_counter = 0
         self.data_section = []
         self.is_data_section = False
-        self.data_length = 0
 
     def assemble(self, asm_code) -> List[int]:
         """
@@ -35,7 +34,6 @@ class Assembler:
             if self.in_data_section:
                 if line.startswith("num"):
                     self.data_section.append(int(line.split()[1]))
-                    self.data_length += 1
             else:
                 if line.endswith(":"):
                     self.label_map[line[:-1]] = self.label_counter
@@ -45,7 +43,7 @@ class Assembler:
         logger.debug(f"self.label_map: {self.label_map}")
 
         for line in asm_code:
-            if not line.endswith(":") and not line.startswith(".") and not line.startswith('num'):
+            if not line.endswith(":") and not line.startswith('.') and not line.startswith('num'):
                 line = line.strip()
                 if not line:
                     continue
